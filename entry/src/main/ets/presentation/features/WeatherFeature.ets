@@ -1,37 +1,30 @@
-import { LoadingView } from '../presentation/components/LoadingView';
-import { ErrorView } from '../presentation/components/ErrorView';
+import { LoadingView } from '../components/LoadingView';
+import { ErrorView } from '../components/ErrorView';
 import {
   WeatherViewModel,
   WeatherState,
   LoadInput,
   RefreshInput
-} from '../presentation/viewmodel/WeatherViewModel';
-import { StateUnsubscribe } from '../presentation/viewmodel/BaseViewModel';
+} from '../viewmodel/WeatherViewModel';
+import { StateUnsubscribe } from '../viewmodel/BaseViewModel';
 import {
   WeatherSnapshot,
   HourlyForecast,
   weatherConditionGlyph,
   weatherConditionLabel
-} from '../domain/models/Weather';
-import { WatchContainer } from '../core/di/WatchContainer';
-import { Logger } from '../core/logging/Logger';
+} from '../../domain/models/Weather';
+import { WatchContainer } from '../../core/di/WatchContainer';
+import { Logger } from '../../core/logging/Logger';
 
-const TAG = 'WeatherPage';
+const TAG = 'WeatherFeature';
 
 /**
- * Single-page weather UI for a 466×466 round HarmonyOS wearable.
- *
- * Layout notes:
- * - All content sits inside a Stack so the black background fills the
- *   circular screen while text stays inside the inscribed square.
- * - Big temp + glyph dominates the hero area (glanceable in <1s).
- * - Forecast row is a horizontally-scrollable List (digital crown +
- *   touch both work out-of-the-box on Scroll/List components per
- *   HarmonyOS wearable conventions).
+ * Weather feature view — meant to live inside a Swiper page on the
+ * watch's root MainPage. Layout sized for a 466×466 round display,
+ * content constrained to the inscribed square.
  */
-@Entry
 @Component
-struct WeatherPage {
+export struct WeatherFeature {
   @State private viewState: WeatherState = {
     snapshot: undefined,
     isLoading: false,
@@ -64,7 +57,6 @@ struct WeatherPage {
 
   build() {
     Stack() {
-      // Background fills the full round screen.
       Column()
         .width('100%')
         .height('100%')
@@ -91,7 +83,6 @@ struct WeatherPage {
   @Builder
   private buildContent(snapshot: WeatherSnapshot) {
     Column() {
-      // Hero: glyph + temperature
       Row() {
         Text(weatherConditionGlyph(snapshot.current.condition, snapshot.current.isDay))
           .fontSize(48)
@@ -113,7 +104,6 @@ struct WeatherPage {
       .alignItems(VerticalAlign.Center)
       .width('100%')
 
-      // Secondary: feels-like + humidity + wind
       Row() {
         this.buildMetric(`${Math.round(snapshot.current.apparentTemperatureC)}°`, 'Feels')
         Divider()
@@ -132,7 +122,6 @@ struct WeatherPage {
       .margin({ top: 14 })
       .justifyContent(FlexAlign.Center)
 
-      // Forecast strip: next 6 hours
       List({ space: 10 }) {
         ForEach(snapshot.next6Hours, (hour: HourlyForecast, index: number) => {
           ListItem() {
@@ -147,9 +136,6 @@ struct WeatherPage {
       .margin({ top: 16 })
       .padding({ left: 8, right: 8 })
 
-      // Footer: refresh affordance (tap to refresh; pull-to-refresh left
-      // to a later iteration since Refresh component behaves oddly on
-      // circular layouts in early SDK builds).
       Row() {
         Text(this.viewState.isLoading ? 'Refreshing…' : 'Tap to refresh')
           .fontSize(11)

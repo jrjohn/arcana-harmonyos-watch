@@ -28,9 +28,9 @@ export default class EntryAbility extends UIAbility {
 
   onWindowStageCreate(windowStage: window.WindowStage): void {
     hilog.info(DOMAIN, TAG, 'Ability onWindowStageCreate');
-    windowStage.loadContent('pages/WeatherPage', (err) => {
+    windowStage.loadContent('pages/MainPage', (err) => {
       if (err.code) {
-        hilog.error(DOMAIN, TAG, 'Failed to load WeatherPage: %{public}s', JSON.stringify(err));
+        hilog.error(DOMAIN, TAG, 'Failed to load MainPage: %{public}s', JSON.stringify(err));
       }
     });
   }
