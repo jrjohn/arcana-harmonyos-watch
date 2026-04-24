@@ -1,0 +1,12 @@
+{
+  "string": [
+    {
+      "name": "app_name",
+      "value": "Arcana Weather"
+    },
+    {
+      "name": "app_description",
+      "value": "Clean-architecture weather watch app for Huawei Watch (HarmonyOS Wearable) — current conditions + 6-hour forecast, served by Open-Meteo"
+    }
+  ]
+}

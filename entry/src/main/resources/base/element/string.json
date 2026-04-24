@@ -1,0 +1,52 @@
+{
+  "string": [
+    {
+      "name": "module_desc",
+      "value": "Arcana Weather — Wearable entry module"
+    },
+    {
+      "name": "EntryAbility_desc",
+      "value": "Main entry ability for Arcana Weather"
+    },
+    {
+      "name": "EntryAbility_label",
+      "value": "Weather"
+    },
+    {
+      "name": "app_name",
+      "value": "Arcana Weather"
+    },
+    {
+      "name": "app_description",
+      "value": "Clean-architecture weather watch app for Huawei Watch (HarmonyOS Wearable)"
+    },
+    {
+      "name": "internet_permission_reason",
+      "value": "Required to fetch current weather from Open-Meteo"
+    },
+    {
+      "name": "network_info_permission_reason",
+      "value": "Required for checking network connectivity before refresh"
+    },
+    {
+      "name": "location_permission_reason",
+      "value": "Required to show weather for your current location"
+    },
+    {
+      "name": "loading",
+      "value": "Loading..."
+    },
+    {
+      "name": "retry",
+      "value": "Retry"
+    },
+    {
+      "name": "error_generic",
+      "value": "Weather unavailable"
+    },
+    {
+      "name": "no_location",
+      "value": "Location not available"
+    }
+  ]
+}
