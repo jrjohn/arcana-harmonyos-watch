@@ -149,6 +149,89 @@ populate within a couple of seconds.
 - Earthquake feed tab could add a magnitude filter (M4+ / M5+) for users in regions where
   M2.5 noise is too frequent.
 
+## Honest assessment
+
+Written down so anyone forking this knows exactly what they're getting.
+
+### What's solid (pros)
+
+- **Clean Architecture carries over correctly.** Domain knows nothing about HTTP; ports
+  (`WeatherRepository`, `EarthquakeRepository`) sit in `domain/`, adapters in `data/`.
+  A second adapter (e.g. CWA for Taiwan EEW) can drop in without touching the UI.
+- **Two real, zero-key APIs.** Anyone can clone and run — no credential setup, no vendor
+  lock-in, no API-key rate-limit landmine on first launch.
+- **Wearable-correct manifest and UX primitives.** `deviceTypes: ["wearable"]`, dark palette,
+  466×466-aware inscribed-square layout, `Swiper` navigation, `List` for crown scroll — all
+  grounded against HarmonyOS dev docs at the time of writing.
+- **Graceful location degradation.** Earthquake page works without location (falls back to
+  newest-first); user isn't held hostage by a permission prompt to see useful data.
+- **Focused surface.** 27 ArkTS files, ~3,900 lines total. Small enough to read end-to-end
+  in ~1 hour.
+- **Sharable primitives.** `Result` / `AppError` / `BaseViewModel` / `ApiClient` are the same
+  shapes as the phone-side project — cognitive parity across form factors.
+
+### What's brittle (cons / risks)
+
+- **Never compiled.** All code is written against ArkTS conventions from the source repo plus
+  researched doc excerpts; `hvigor build` has **not** run against this tree. Expect a handful
+  of fix-up rounds on first build — likely culprits: `Swiper.indicator()` API shape on your
+  exact SDK, `abilityAccessCtrl.requestPermissionsFromUser` return shape, strict-mode `| undefined`
+  field declarations, `@Builder` parameter typing.
+- **No tests.** The source project's Jest scaffolding was dropped; no `ohosTest` either.
+  Adding at least repository-level unit tests before trusting the distance/sort logic is wise.
+- **Icons are 11-byte placeholders** (`media/*.png` inherited from source). Real launch icon,
+  startWindow icon, and layered adaptive icon set need swapping before a real install.
+- **No caching.** Every time a page appears it re-fetches GPS + HTTP. Fine for a demo,
+  aggressive on watch battery. A simple in-memory TTL cache (~5 min for weather, ~2 min for
+  quakes) is the obvious next step.
+- **No attribution UI.** Open-Meteo's CC-BY-4.0 license requires visible attribution. Currently
+  only in README — needs a small "Data: Open-Meteo / USGS" line somewhere in-app before ship.
+- **No background / push.** The earthquake page **is not a real "速報" (EEW)** — it's a
+  pull-every-time-you-look feed. Real earthquake early warning (CWA in Taiwan, JMA in Japan)
+  needs push channels + licensed backend; this scaffold cannot replace that.
+- **Watch connectivity assumption.** HTTP requires the watch to reach the internet. Huawei
+  Watch 4 / Ultimate / Watch 5 have independent Wi-Fi / LTE; **Watch GT 4 piggybacks on the
+  paired phone via BT tether** — if the user walks away from their phone, GT 4 calls will fail.
+  Not currently handled with a graceful "paired phone unreachable" error.
+- **Strings are English-only.** `LocalizationManager` was dropped; if the target market is
+  Taiwan / Japan / CN, a light i18n layer needs adding back.
+- **No filter UI.** M≥2.5 returns ~50–200 events per day globally; a user in a quiet region
+  mostly sees events on the far side of Earth. A magnitude / distance filter button would help.
+- **Permissions prompt happens twice.** Both features call `requestPermissionsFromUser`
+  independently. Idempotent but noisy to read in logs — `LocationService` should cache grant
+  state.
+
+### Rank
+
+| Axis | Grade | Reasoning |
+|---|---|---|
+| Architecture | **A** | Clean layers, ports + adapters, shared primitives with phone project |
+| ArkTS / ArkUI idiom use | **A−** | Correct wearable manifest, `Swiper`/`List` choice, dark-first palette |
+| Feature completeness (MVP) | **B** | 2 features work; no caching, no filter, no background, no i18n |
+| Compile readiness | **C** | Written but never built — expect first-compile churn |
+| Device readiness | **C** | Never flashed to real watch or simulator; GT 4 tether path untested |
+| Production readiness | **D** | No tests, placeholder icons, no signing, no attribution UI, no telemetry |
+| Educational value | **A** | Small enough to read; demonstrates port/adapter cleanly with two real backends |
+
+**Overall: B− — a solid learning / portfolio scaffold.** Good shape, not shippable.
+Before it becomes shippable: compile green → device test → icons → caching → attribution UI →
+tests → i18n → signing profile. That's the ordered roadmap.
+
+### What this is good for
+
+- Learning HarmonyOS wearable ArkTS end-to-end from a real (not hello-world) example.
+- Starting point for your own single-purpose watch utility (swap either feature for your own
+  domain — the skeleton reuses cleanly).
+- Comparing how Clean Architecture adapts when you move from phone → watch (large UI /
+  feature surface shrinks, core primitives survive).
+
+### What this is NOT good for
+
+- Shipping to end users as-is.
+- Real earthquake early warning (EEW) — fundamentally wrong transport for that use case.
+- Learning background-task / push / notification patterns — this scaffold deliberately avoids
+  them.
+
 ## License
 
 Apache-2.0 (inherited from the source project).
