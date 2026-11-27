@@ -2,12 +2,12 @@
 
 <div align="center">
 
-![HarmonyOS](https://img.shields.io/badge/HarmonyOS-NEXT%205.0-blue?style=for-the-badge&logo=huawei&logoColor=white)
-![ArkTS](https://img.shields.io/badge/ArkTS-Stage%20Model-3178C6?style=for-the-badge&logo=typescript&logoColor=white)
-![Device](https://img.shields.io/badge/deviceTypes-wearable-green?style=for-the-badge)
-![Architecture](https://img.shields.io/badge/Architecture-Clean%20MVI-purple?style=for-the-badge)
-![Grade](https://img.shields.io/badge/Grade-B%E2%88%92-yellow?style=for-the-badge)
-![Tests](https://img.shields.io/badge/Tests-0%20(pending)-lightgrey?style=for-the-badge)
+![HarmonyOS](.github/badges/harmonyos-next-5-0-blue-f9748eaa.svg)
+![ArkTS](.github/badges/arkts-stage-model-3178c6-c514220b.svg)
+![Device](.github/badges/devicetypes-wearable-green-801048e9.svg)
+![Architecture](.github/badges/architecture-clean-mvi-purple-8ebae12a.svg)
+![Grade](.github/badges/grade-b-yellow-537d83b8.svg)
+![Tests](.github/badges/tests-0-pending-3c6d1120.svg)-lightgrey?style=for-the-badge)
 
 **Wearable Reference Scaffold — Huawei Watch (HarmonyOS NEXT)**
 
@@ -752,8 +752,8 @@ Earthquake data: [USGS Earthquake Hazards Program](https://earthquake.usgs.gov/)
 
 **Clean Architecture principles, sized for a round HarmonyOS wearable.**
 
-![Grade](https://img.shields.io/badge/Overall%20Grade-B%E2%88%92-yellow?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-MVP%20Scaffold-orange?style=for-the-badge)
-![Ready](https://img.shields.io/badge/Ship--Ready-No-red?style=for-the-badge)
+![Grade](.github/badges/overall-grade-b-yellow-35f1e4a3.svg)
+![Status](.github/badges/status-mvp-scaffold-orange-f3303764.svg)
+![Ready](.github/badges/ship-ready-no-red-4379942a.svg)
 
 </div>
